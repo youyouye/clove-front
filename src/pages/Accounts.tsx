@@ -220,6 +220,12 @@ export function Accounts() {
                                     <span className='text-muted-foreground'>重置时间</span>
                                     <span>{account.resets_at ? new Date(account.resets_at).toLocaleString('zh-CN') : '-'}</span>
                                 </div>
+                                {account.proxy_url && (
+                                    <div className='flex justify-between'>
+                                        <span className='text-muted-foreground'>代理 IP</span>
+                                        <span className='font-mono text-xs'>{account.proxy_url}</span>
+                                    </div>
+                                )}
                             </div>
                             <div className='flex gap-2 pt-2'>
                                 <Button size='sm' variant='outline' className='flex-1' onClick={() => handleEdit(account)}>
@@ -278,6 +284,9 @@ export function Accounts() {
                                         </TableHead>
                                         <TableHead>
                                             <Skeleton className='h-4 w-24' />
+                                        </TableHead>
+                                        <TableHead>
+                                            <Skeleton className='h-4 w-32' />
                                         </TableHead>
                                         <TableHead>
                                             <Skeleton className='h-4 w-32' />
@@ -406,6 +415,7 @@ export function Accounts() {
                                     <TableHead>认证方式</TableHead>
                                     <TableHead>状态</TableHead>
                                     <TableHead>账户类型</TableHead>
+                                    <TableHead>代理 IP</TableHead>
                                     <TableHead>最后使用</TableHead>
                                     <TableHead>重置时间</TableHead>
                                     <TableHead className='text-right'>操作</TableHead>
@@ -429,6 +439,9 @@ export function Accounts() {
                                         </TableCell>
                                         <TableCell>
                                             <AccountTypeBadge account={account} />
+                                        </TableCell>
+                                        <TableCell className='text-sm font-mono'>
+                                            {account.proxy_url || '-'}
                                         </TableCell>
                                         <TableCell className='text-sm'>
                                             {new Date(account.last_used).toLocaleString('zh-CN')}

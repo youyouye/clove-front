@@ -10,6 +10,7 @@ export interface AccountCreate {
   oauth_token?: OAuthToken;
   organization_uuid?: string;
   capabilities?: string[];
+  proxy_url?: string;
 }
 
 export interface AccountUpdate {
@@ -17,6 +18,7 @@ export interface AccountUpdate {
   oauth_token?: OAuthToken;
   capabilities?: string[];
   status?: 'valid' | 'invalid' | 'rate_limited';
+  proxy_url?: string;
 }
 
 export interface OAuthCodeExchange {
@@ -24,6 +26,7 @@ export interface OAuthCodeExchange {
   code: string;
   pkce_verifier: string;
   capabilities?: string[];
+  proxy_url?: string;
 }
 
 export interface AccountResponse {
@@ -37,6 +40,7 @@ export interface AccountResponse {
   has_oauth: boolean;
   last_used: string;
   resets_at?: string;
+  proxy_url?: string;
 }
 
 // 设置相关类型

@@ -25,6 +25,7 @@ export function OAuthModal({ onClose }: OAuthModalProps) {
     const [organizationUuid, setOrganizationUuid] = useState('')
     const [accountType, setAccountType] = useState<'Pro' | 'Max'>('Pro')
     const [authCode, setAuthCode] = useState('')
+    const [proxyUrl, setProxyUrl] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const [uuidError, setUuidError] = useState('')
@@ -110,6 +111,7 @@ export function OAuthModal({ onClose }: OAuthModalProps) {
                 pkce_verifier: pkceVerifier,
                 capabilities:
                     accountType === 'Max' ? ['chat', 'claude_max'] : accountType === 'Pro' ? ['chat', 'claude_pro'] : ['chat'],
+                proxy_url: proxyUrl || undefined,
             }
 
             await accountsApi.exchangeOAuthCode(exchangeData)
@@ -175,6 +177,19 @@ export function OAuthModal({ onClose }: OAuthModalProps) {
                                 <SelectItem value='Max'>Max</SelectItem>
                             </SelectContent>
                         </Select>
+                    </div>
+
+                    <div className='space-y-2'>
+                        <Label htmlFor='proxy_url'>代理 IP</Label>
+                        <Input
+                            id='proxy_url'
+                            placeholder='例如: http://127.0.0.1:7890 或 socks5://127.0.0.1:1080'
+                            value={proxyUrl}
+                            onChange={e => setProxyUrl(e.target.value)}
+                        />
+                        <p className='text-xs text-muted-foreground'>
+                            可选。支持 HTTP、HTTPS 和 SOCKS5 代理
+                        </p>
                     </div>
 
                     {error && (

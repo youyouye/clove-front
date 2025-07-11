@@ -33,6 +33,7 @@ export function AccountModal({ account, onClose }: AccountModalProps) {
         cookie_value: '',
         organization_uuid: '',
         capabilities: [] as string[],
+        proxy_url: '',
     })
     const [accountType, setAccountType] = useState<'none' | 'Free' | 'Pro' | 'Max'>('none')
     const [loading, setLoading] = useState(false)
@@ -47,6 +48,7 @@ export function AccountModal({ account, onClose }: AccountModalProps) {
                 cookie_value: '',
                 organization_uuid: account.organization_uuid,
                 capabilities: account.capabilities || [],
+                proxy_url: account.proxy_url || '',
             })
 
             const caps = account.capabilities || []
@@ -124,6 +126,10 @@ export function AccountModal({ account, onClose }: AccountModalProps) {
                     updateData.capabilities = capabilities
                 }
 
+                if (formData.proxy_url !== account.proxy_url) {
+                    updateData.proxy_url = formData.proxy_url || undefined
+                }
+
                 await accountsApi.update(account.organization_uuid, updateData)
             } else {
                 // 创建新账户
@@ -139,6 +145,10 @@ export function AccountModal({ account, onClose }: AccountModalProps) {
 
                 if (capabilities) {
                     createData.capabilities = capabilities
+                }
+
+                if (formData.proxy_url) {
+                    createData.proxy_url = formData.proxy_url
                 }
 
                 await accountsApi.create(createData)
@@ -241,6 +251,19 @@ export function AccountModal({ account, onClose }: AccountModalProps) {
                                     <SelectItem value='Max'>Max</SelectItem>
                                 </SelectContent>
                             </Select>
+                        </div>
+
+                        <div className='space-y-2'>
+                            <Label htmlFor='proxy_url'>代理 IP</Label>
+                            <Input
+                                id='proxy_url'
+                                placeholder='例如: http://127.0.0.1:7890 或 socks5://127.0.0.1:1080'
+                                value={formData.proxy_url}
+                                onChange={e => setFormData({ ...formData, proxy_url: e.target.value })}
+                            />
+                            <p className='text-xs text-muted-foreground'>
+                                可选。支持 HTTP、HTTPS 和 SOCKS5 代理
+                            </p>
                         </div>
                     </CollapsibleContent>
                 </Collapsible>
